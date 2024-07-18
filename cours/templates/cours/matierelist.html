@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Liste des Matières pour {{ niveau.nom }}</h1>
+    {% if user.is_superuser %}<div class="row">
+        {% for matiere in niveau.matiere.all %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img src="{{ matiere.image.url }}" class="card-img-top" alt="{{ matiere.nom }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ matiere.nom }}</h5>
+                        <p class="card-text">
+                            <span class="badge bg-secondary">Chapitre: {{ matiere.num_chapitre }}</span>
+                        </p>
+                        <a href="{% url 'cours:lessonlist' slug=matiere.slug niveau=niveau.slug %}" class="btn btn-primary">
+                            <i class="bi bi-book"></i> Voir les leçons
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if user_subscription %}
+        <div class="row">
+            {% for matiere in niveau.matiere.all %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <img src="{{ matiere.image.url }}" class="card-img-top" alt="{{ matiere.nom }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ matiere.nom }}</h5>
+                            <p class="card-text">
+                                <span class="badge bg-secondary">Chapitre: {{ matiere.num_chapitre }}</span>
+                            </p>
+                            <a href="{% url 'cours:lessonlist' slug=matiere.slug niveau=niveau.slug %}" class="btn btn-primary">
+                                <i class="bi bi-book"></i> Voir les leçons
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">Aucune matière pour le moment</p>
+        
+    {% endif %}
+</div>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    }
+
+    h1 {
+        color: #fff;
+        font-weight: bold;
+        margin-bottom: 2rem;
+    }
+
+    .card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img-top {
+        height: 100px;
+        object-fit: cover;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .card-text {
+        margin-bottom: 15px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+</style>
+{% endblock %}

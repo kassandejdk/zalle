@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Progression de {{ user.username }}</h2>
+    <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>Leçons complétées</span>
+            <div class="progress" style="width: 50%;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: {{ user_progress.completion_percentage }}%;" aria-valuenow="{{ user_progress.completion_percentage }}" aria-valuemin="0" aria-valuemax="100">{{ user_progress.lessons_completed }}</div>
+            </div>
+            <span class="badge bg-success rounded-pill">{{ user_progress.lessons_completed }} / {{ user_progress.total_lessons }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>Total des leçons</span>
+            <span class="badge bg-primary rounded-pill">{{ user_progress.total_lessons }}</span>
+        </li>
+        {% if user_progress.lessons_completed == user_progress.total_lessons %}
+        <li class="list-group-item">
+            <div class="alert alert-success" role="alert">
+                <i class="bi bi-award"></i> Félicitations ! Vous avez complété toutes les leçons.
+            </div>
+        </li>
+        {% else %}
+        <li class="list-group-item">
+            <a href="#" class="btn btn-primary">Voir mes leçons completés</a>
+            <a href="#" class="btn btn-success">Marquer une nouvelle leçon complétée</a>
+        </li>
+        {% endif %}
+       
+    </ul>
+</div>
+{% endblock %}

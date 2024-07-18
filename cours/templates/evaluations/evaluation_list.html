@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Liste des évaluations</h2>
+    <ul class="list-group">
+        {% for evaluation in evaluations %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1"><a href="{% url 'cours:evaluation_detail' evaluation.id %}">{{ evaluation.title }}</a></h5>
+                    <p class="mb-1 text-muted">Créé par: {{ evaluation.created_by.username }}</p>
+                    <small class="text-muted">Leçon: {{ evaluation.lesson.nom }}</small>
+                </div>
+                <span class="badge bg-primary rounded-pill">{{ evaluation.questions.count }} questions</span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<style>
+     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+    .container {
+        background-color: #55595e;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+        font-size: 1.75rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+    .list-group-item {
+        border: none;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+    .list-group-item h5 {
+        font-size: 1.25rem;
+    }
+    .list-group-item a {
+        text-decoration: none;
+        color: #007bff;
+    }
+    .list-group-item a:hover {
+        text-decoration: underline;
+    }
+    .badge {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+    }
+</style>
+{% endblock %}

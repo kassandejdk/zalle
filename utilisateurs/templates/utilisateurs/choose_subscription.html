@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Choix de l'abonnement</h1>
+    <form method="post" action="{% url 'choose_subscription' %}">
+        {% csrf_token %}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="subscription_type" id="standard" value="standard" checked>
+            <label class="form-check-label" for="standard">
+                Standard (100 FCFA)
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="subscription_type" id="premium" value="premium">
+            <label class="form-check-label" for="premium">
+                Premium (150 FCFA)
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Choisir</button>
+    </form>
+</div>
+{% endblock %}

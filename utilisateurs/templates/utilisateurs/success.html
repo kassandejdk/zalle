@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Confirmation de paiement</h1>
+    
+    {% if payment_data.status == "completed" %}
+        <p>Votre paiement a été effectué avec succès pour la transaction {{ transaction_id }}.</p>
+        <p>Merci pour votre abonnement!</p>
+    {% else %}
+        <p>Il y a eu un problème avec votre paiement pour la transaction {{ transaction_id }}.</p>
+        <p>Veuillez réessayer ou contacter le support.</p>
+    {% endif %}
+    
+    <a href="{% url 'acceuil' %}">acceuil</a>
+</div>
+{% endblock %}

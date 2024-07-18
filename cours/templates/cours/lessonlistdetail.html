@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title">{{ lesson.nom }}</h2>
+            <p class="text-muted">Créé par {{ lesson.creer_par }}</p>
+            <p>Vues: {{ lesson.view_count }}</p>
+            <p>Téléchargements: {{ lesson.download_count }}</p>
+            {% if user.is_superuser %}
+                <a href="{% url 'cours:lessonupdate' niveau=lesson.niveau.slug matiere=lesson.matiere.slug slug=lesson.slug %}" class="btn btn-warning btn-sm">
+                    <i class="bi bi-pencil"></i> Modifier
+                </a>
+                <a href="{% url 'cours:lessondelete' niveau=lesson.niveau.slug matiere=lesson.matiere.slug slug=lesson.slug %}" class="btn btn-danger btn-sm">
+                    <i class="bi bi-trash"></i> Supprimer
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            {% if lesson.video %}
+                <div class="mb-4">
+                    <h4>Vidéo du cours</h4>
+                    <video controls class="w-100">
+                        <source src="{{ lesson.video.url }}" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture de vidéos.
+                    </video>
+                    <a href="{% url 'cours:download_file' lesson.id 'video' %}" class="btn btn-success btn-sm mt-2" download>
+                        <i class="bi bi-file-earmark-arrow-down"></i> Télécharger la vidéo
+                    </a>
+                </div>
+            {% endif %}
+            {% if lesson.pdf %}
+                <div class="mb-4">
+                    <h4>Document PDF du cours</h4>
+                    <a href="{{ lesson.pdf.url }}" class="btn btn-primary btn-sm" target="_blank">
+                        <i class="bi bi-file-earmark-pdf"></i> Voir le PDF
+                    </a>
+                    <a href="{{ lesson.pdf.url }}" class="btn btn-success btn-sm mt-2" download>
+                        <i class="bi bi-file-earmark-arrow-down"></i> Télécharger le PDF
+                    </a>
+                </div>
+            {% endif %}
+            {% if lesson.fp %}
+                <div class="mb-4">
+                    <h4>Fiche de présentation</h4>
+                    <a href="{{ lesson.fp.url }}" class="btn btn-success btn-sm" download>
+                        <i class="bi bi-file-earmark-arrow-down"></i> Télécharger la fiche
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h4>Postez votre commentaire</h4>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                    <input type="submit" name="form" value="Commentez" class="btn btn-primary btn-sm">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            {% for comment in lesson.comments.all %}
+                <div class="mb-4">
+                    <h5>{{ comment.auteur }} <small class="text-muted"><i>posté le {{ comment.date_ajou }}</i></small></h5>
+                    <p>{{ comment.corps }}</p>
+                    <div class="ms-3">
+                        {% for reponse in comment.reponses.all %}
+                            <div class="mb-3">
+                                <h6>{{ reponse.auteur }} <small class="text-muted"><i>posté le {{ reponse.date_ajou }}</i></small></h6>
+                                <p>{{ reponse.corps }}</p>
+                            </div>
+                        {% endfor %}
+                        <form method="POST" class="mt-2">
+                            {% csrf_token %}
+                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                            {{ form2.as_p }}
+                            <input type="submit" name="form2" value="Répondez" class="btn btn-warning btn-sm">
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="card-footer">
+            {% if lesson.complet %}
+                <div id="completedMarker" style="margin-top: 10px;">
+                    <span class="badge bg-success"><i class="bi bi-check-circle"></i> Leçon complétée</span>
+                </div>
+            {% endif %}
+            <a href="{% url 'cours:mark_completed' niveau=lesson.niveau.slug matiere=lesson.matiere.slug slug=lesson.slug %}" class="btn btn-success btn-sm" id="markCompletedBtn">
+                <i class="bi bi-check-circle"></i> Marquer comme complétée
+            </a>
+        </div>
+    </div>
+</div>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    }
+
+h2 {
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+</style>
+{% endblock %}

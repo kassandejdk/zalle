@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Leçons pour {{ matieres.nom }}</h1>
+    <div class="row">
+        {% if matieres.lesson.all %}
+            {% for lesson in matieres.lesson.all %}
+                <div class="col-md-4 d-flex align-items-stretch">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Chapitre-{{ lesson.position }}: {{ lesson.nom }}</h5>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'cours:lessonlistdetail' slug=lesson.slug matiere=matieres.slug niveau=matieres.niveau.slug %}" class="btn btn-primary mt-auto">
+                                    <i class="bi bi-book"></i> Voir la leçon
+                                </a>
+                         
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center">Aucune leçon disponible pour le moment.</p>
+        {% endif %}
+    </div>
+    {% if user.is_superuser %}
+        <div class="text-center mt-4">
+            <a href="{% url 'cours:lessoncreate' niveau=matieres.niveau.slug slug=matieres.slug %}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Créer une leçon
+            </a>
+        </div>
+    {% endif %}
+</div>
+<style>
+   body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    }
+
+h1 {
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.card-text {
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+</style>
+{% endblock %}

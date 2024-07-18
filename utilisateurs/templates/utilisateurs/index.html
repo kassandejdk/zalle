@@ -1,0 +1,173 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Section Accueil -->
+{% if messages %}
+   <div id="success-message" class="alert alert-success">
+       {% for message in messages %}
+           <p>{{ message }}</p>
+       {% endfor %}
+   </div>
+{% endif %}
+<section id="home">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 order-md-1 order-2">
+                <div class="welcome-text">
+                    <h4>Bienvenue sur</h4>
+                    <h1>EducaLigne</h1>
+                    <p>Disponible 24h/7jrs.</p>
+                    <div class="buttons">
+                        <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Se Connecter</a>
+                        <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg">S'inscrire</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 order-md-2 order-1">
+                <div class="welcome-image text-center">
+                    <img src="{% static 'image/font.jpg' %}" class="img-fluid" alt="EducaLigne Image">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// JavaScript pour faire disparaître le message après 2 secondes
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        var successMessage = document.getElementById('success-message');
+        if (successMessage) {
+            successMessage.style.display = 'none';
+        }
+    }, 2000);  // Disparition après 2 secondes (2000 ms)
+});
+</script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    #home {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        color: #fff;
+    }
+
+    .welcome-text {
+        max-width: 500px;
+        margin-right: auto;
+        animation: fadeInLeft 1s ease-in-out;
+    }
+
+    .welcome-text h4 {
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-bottom: 10px;
+    }
+
+    .welcome-text h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    .welcome-text p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+
+    .buttons .btn {
+        margin-right: 15px;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .buttons .btn-primary {
+        background-color: #ff6f61;
+        border: none;
+    }
+
+    .buttons .btn-primary:hover {
+        background-color: #e65a50;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(255, 111, 97, 0.3);
+    }
+
+    .buttons .btn-outline-light {
+        border: 2px solid #ff6f61;
+        color: #ff6f61;
+    }
+
+    .buttons .btn-outline-light:hover {
+        background-color: #ff6f61;
+        color: #fff;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(255, 111, 97, 0.3);
+    }
+
+    .welcome-image img {
+        max-width: 80%;
+        height: auto;
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        animation: fadeInRight 1s ease-in-out;
+        margin: 20px auto;
+    }
+
+    @keyframes fadeInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes fadeInRight {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @media (max-width: 767px) {
+        #home {
+            padding: 50px 0;
+        }
+
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .welcome-text h1 {
+            font-size: 2.5rem;
+        }
+
+        .welcome-text p {
+            font-size: 1rem;
+        }
+
+        .buttons .btn {
+            display: block;
+            margin: 10px auto;
+        }
+    }
+</style>
+{% endblock %}

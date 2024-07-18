@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Section Niveaux -->
+
+<section id="niveaux">
+
+    <div class="container mt-5">
+        <div class="row">
+            {% if user.is_superuser %}
+            {% for niveau in niveaux %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ niveau.nom }}</h5>
+                        <p class="card-text">{{ niveau.description|truncatewords:20 }}</p>
+                        <a href="{% url 'cours:matierelist' slug=niveau.slug %}" class="btn btn-primary">Voir les matières</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+          
+            {% for niveau in niveaux %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ niveau.nom }}</h5>
+                        <p class="card-text">{{ niveau.description|truncatewords:20 }}</p>
+                        {% if user_niveau and user_niveau.name == niveau.nom %}
+                            <a href="{% url 'cours:matierelist' slug=niveau.slug %}" class="btn btn-primary">Voir les matières</a>
+                        {% else %}
+                            <button class="btn btn-secondary" disabled>Accès restreint</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    #niveaux {
+        padding: 120px 0;
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        color: #fff;
+    }
+
+    .card {
+        transition: transform 0.3s, box-shadow 0.3s;
+        background-color: #fff;
+        border-radius: 15px;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        color: #333;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .btn-primary {
+        background-color: #6186ff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #e65a50;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(255, 111, 97, 0.3);
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+    @media (max-width: 767px) {
+        #niveaux {
+            padding: 50px 0;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}

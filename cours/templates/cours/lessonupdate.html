@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body py-4">
+                    <h2 class="card-title text-center mb-4">Modifier la leçon</h2>
+                    <form method="POST" class="form">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-group mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label_tag }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in field.errors %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {% if field.help_text %}
+                                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <div class="mt-3 text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-check"></i> Confirmer la modification
+                            </button>
+                            <a href="{% url 'cours:lessonlistdetail' slug=lesson.slug matiere=lesson.matiere.slug niveau=lesson.niveau.slug %}" class="btn btn-secondary ms-2">
+                                <i class="fas fa-times"></i> Annuler la modification
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .container {
+        margin-top: 5rem;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+    }
+
+    .card-title {
+        font-weight: bold;
+        font-size: 1.8rem;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .invalid-feedback p {
+        margin: 0;
+    }
+
+    .btn i {
+        margin-right: 5px;
+    }
+</style>
+{% endblock %}
